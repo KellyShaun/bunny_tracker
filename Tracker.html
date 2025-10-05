@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f9e5ec" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.svg" />
+  <title>Bunny’s Tracker 🐰</title>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js");
+      });
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-mint-100 via-pink-50 to-white min-h-screen font-sans flex flex-col items-center">
+
+  <!-- Splash Screen -->
+  <div id="splash" class="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-mint-100 z-50">
+    <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2c3 0 5 3 5 7 0 4-2 7-5 7s-5-3-5-7c0-4 2-7 5-7z" stroke="#f38fa9" stroke-width="2" />
+      <circle cx="9" cy="10" r="1.5" fill="#f38fa9" />
+      <circle cx="15" cy="10" r="1.5" fill="#f38fa9" />
+    </svg>
+    <p class="mt-3 text-pink-500 font-semibold text-lg animate-bounce">Bunny’s Tracker</p>
+  </div>
+
+  <main class="flex-grow w-full max-w-md p-5 text-center space-y-4 mt-8 hidden" id="app">
+
+    <h1 class="text-3xl font-bold text-pink-600 mb-4">🐰 Bunny’s Tracker</h1>
+
+    <div class="bg-white bg-opacity-70 backdrop-blur-md rounded-3xl shadow-lg p-5 space-y-3">
+      <h2 class="text-lg font-semibold text-pink-500">Add New Entry</h2>
+      <input id="entryInput" class="w-full p-2 rounded-lg border border-pink-200 focus:outline-none focus:ring focus:ring-pink-300" placeholder="What did you eat or do?" />
+      <button id="addBtn" class="bg-pink-400 hover:bg-pink-500 text-white font-semibold px-4 py-2 rounded-lg shadow transition">Add Entry</button>
+    </div>
+
+    <div class="bg-white bg-opacity-70 rounded-3xl shadow-lg p-5">
+      <h2 class="text-lg font-semibold text-pink-500 mb-2">My Entries</h2>
+      <ul id="entries" class="space-y-2 text-left"></ul>
+    </div>
+
+  </main>
+
+  <script>
+    // Splash fade
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("splash").style.opacity = "0";
+        setTimeout(() => {
+          document.getElementById("splash").style.display = "none";
+          document.getElementById("app").classList.remove("hidden");
+        }, 1000);
+      }, 2000);
+    });
+
+    const input = document.getElementById("entryInput");
+    const list = document.getElementById("entries");
+    const addBtn = document.getElementById("addBtn");
+    let entries = JSON.parse(localStorage.getItem("bunnyEntries")) || [];
+
+    function renderEntries() {
+      list.innerHTML = entries.map((e, i) => `
+        <li class="flex justify-between items-center bg-pink-50 p-3 rounded-xl">
+          <span>${e}</span>
+          <button onclick="deleteEntry(${i})" class="text-red-400 hover:text-red-500">✕</button>
+        </li>`).join("");
+    }
+
+    addBtn.onclick = () => {
+      if (input.value.trim()) {
+        entries.push(input.value.trim());
+        localStorage.setItem("bunnyEntries", JSON.stringify(entries));
+        renderEntries();
+        input.value = "";
+      }
+    };
+
+    function deleteEntry(index) {
+      entries.splice(index, 1);
+      localStorage.setItem("bunnyEntries", JSON.stringify(entries));
+      renderEntries();
+    }
+
+    renderEntries();
+  </script>
+</body>
+</html>
