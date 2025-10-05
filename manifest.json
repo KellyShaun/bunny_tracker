@@ -1,20 +1,12 @@
 {
-  "name": "Food & Fitness Tracker",
-  "short_name": "Tracker",
-  "start_url": "index.html",
+  "name": "Bunny’s Tracker",
+  "short_name": "BunnyTracker",
+  "start_url": "Tracker.html",
   "display": "standalone",
-  "background_color": "#fff8e1",
-  "theme_color": "#f59e0b",
+  "background_color": "#f9e5ec",
+  "theme_color": "#f9e5ec",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" },
+    { "src": "icon-512.svg", "sizes": "512x512", "type": "image/svg+xml" }
   ]
 }
